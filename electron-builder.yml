@@ -1,0 +1,37 @@
+appId: com.whatsapp.wrapper
+productName: WhatsApp
+copyright: Copyright © 2024
+linux:
+  target:
+    - AppImage
+    - deb
+  icon: assets/icons
+  category: Network
+  desktop:
+    Name: WhatsApp
+    Comment: WhatsApp Desktop Wrapper for Linux
+    Categories: Network;InstantMessaging;Chat;
+    StartupWMClass: whatsapp-wrapper
+    MimeType: x-scheme-handler/whatsapp
+  synopsis: WhatsApp Desktop for Linux
+  description: A native WhatsApp desktop wrapper for Linux with system tray, notifications, and more.
+
+appImage:
+  artifactName: WhatsApp-${version}-${arch}.AppImage
+
+deb:
+  artifactName: whatsapp-wrapper_${version}_${arch}.deb
+  depends:
+    - libnotify4
+    - libappindicator3-1
+
+directories:
+  output: dist
+  buildResources: assets
+
+files:
+  - "**/*"
+  - "!dist/**"
+  - "!node_modules/.cache/**"
+
+asar: true

@@ -1,0 +1,22 @@
+{
+  "name": "whatsapp-wrapper",
+  "version": "1.0.0",
+  "description": "A native WhatsApp desktop wrapper for Linux — built on Electron",
+  "main": "main.js",
+  "author": "Adam",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "dist": "electron-builder",
+    "dist:appimage": "electron-builder --linux AppImage",
+    "dist:deb": "electron-builder --linux deb"
+  },
+  "dependencies": {
+    "electron-store": "^8.2.0"
+  },
+  "devDependencies": {
+    "electron": "^35.0.0",
+    "electron-builder": "^25.1.8"
+  }
+}

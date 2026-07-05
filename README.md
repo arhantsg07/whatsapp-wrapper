@@ -1,5 +1,8 @@
 # WhatsApp for Linux
 
+(More of a vibecoded project than a practical one, to get some native app feel on linux)
+
+
 A fully featured WhatsApp desktop wrapper for Linux, built with Electron. Since WhatsApp doesn't provide a native Linux app, this wrapper delivers a native-like experience around WhatsApp Web with system tray integration, desktop notifications, custom theming, and more.
 
 ![WhatsApp Wrapper](assets/icons/icon_512x512.png)

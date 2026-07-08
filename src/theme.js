@@ -1,4 +1,4 @@
-const { settings } = require("./settings");
+import { settings } from "./settings.js";
 
 /**
  * Inject custom CSS into WhatsApp Web for theming.
@@ -139,4 +139,4 @@ function injectTheme(mainWindow) {
     .catch(() => {});
 }
 
-module.exports = { injectTheme };
+export { injectTheme };

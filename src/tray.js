@@ -1,7 +1,7 @@
-const { Tray, Menu, nativeImage } = require("electron");
-const path = require("path");
-const { settings } = require("./settings");
-const { injectTheme } = require("./theme");
+import { Tray, Menu, nativeImage } from "electron";
+import path from "path";
+import { settings } from "./settings.js";
+import { injectTheme } from "./theme.js";
 
 let currentTray = null;
 
@@ -11,9 +11,9 @@ let currentTray = null;
 function createTray(mainWindow, openSettingsCallback, quitCallback) {
   // Try multiple icon paths: PNG first, then SVG, then generated fallback
   const iconPaths = [
-    path.join(__dirname, "..", "assets", "icons", "tray_icon.png"),
-    path.join(__dirname, "..", "assets", "icons", "icon_256x256.png"),
-    path.join(__dirname, "..", "assets", "icons", "icon_512x512.png"),
+    path.join(import.meta.dirname, "..", "assets", "icons", "tray_icon.png"),
+    path.join(import.meta.dirname, "..", "assets", "icons", "icon_256x256.png"),
+    path.join(import.meta.dirname, "..", "assets", "icons", "icon_512x512.png"),
   ];
 
   let trayIcon = null;
@@ -147,4 +147,4 @@ function createFallbackIcon() {
   );
 }
 
-module.exports = { createTray, updateTrayBadge };
+export { createTray, updateTrayBadge };

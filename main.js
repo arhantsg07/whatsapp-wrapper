@@ -1,18 +1,15 @@
-const {
+import {
   app,
   BrowserWindow,
   shell,
   session,
-  globalShortcut,
   ipcMain,
-  nativeImage,
-  Menu,
-} = require("electron");
-const path = require("path");
-const { createTray, updateTrayBadge } = require("./src/tray");
-const { setupNotifications } = require("./src/notifications");
-const { settings } = require("./src/settings");
-const { injectTheme } = require("./src/theme");
+} from "electron";
+import path from "path";
+import { createTray, updateTrayBadge } from "./src/tray.js";
+import { setupNotifications, showNativeNotification } from "./src/notifications.js";
+import { settings } from "./src/settings.js";
+import { injectTheme } from "./src/theme.js";
 
 // Keep global references to prevent garbage collection
 let mainWindow = null;
@@ -47,12 +44,12 @@ function createMainWindow() {
     minWidth: 400,
     minHeight: 300,
     title: "WhatsApp",
-    icon: path.join(__dirname, "assets", "icons", "icon_256x256.png"),
+    icon: path.join(import.meta.dirname, "assets", "icons", "icon_256x256.png"),
     show: !settings.get("startMinimized", false),
     autoHideMenuBar: true,
     backgroundColor: "#111b21",
     webPreferences: {
-      preload: path.join(__dirname, "preload.js"),
+      preload: path.join(import.meta.dirname, "preload.cjs"),
       contextIsolation: true,
       nodeIntegration: false,
       spellcheck: settings.get("spellCheck", true),
@@ -114,7 +111,9 @@ function createMainWindow() {
   // Open external links in system browser
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
     if (!url.startsWith("https://web.whatsapp.com")) {
-      shell.openExternal(url);
+      if (url.startsWith("https://") || url.startsWith("http://")) {
+        shell.openExternal(url);
+      }
       return { action: "deny" };
     }
     return { action: "allow" };
@@ -124,7 +123,9 @@ function createMainWindow() {
   mainWindow.webContents.on("will-navigate", (event, url) => {
     if (!url.startsWith("https://web.whatsapp.com")) {
       event.preventDefault();
-      shell.openExternal(url);
+      if (url.startsWith("https://") || url.startsWith("http://")) {
+        shell.openExternal(url);
+      }
     }
   });
 
@@ -148,7 +149,9 @@ function createMainWindow() {
  * Grant media permissions for voice/video calls
  */
 function setupPermissions() {
-  session.defaultSession.setPermissionRequestHandler(
+  const whatsappSession = session.fromPartition("persist:whatsapp");
+
+  whatsappSession.setPermissionRequestHandler(
     (webContents, permission, callback) => {
       const allowedPermissions = [
         "media",
@@ -162,7 +165,7 @@ function setupPermissions() {
     }
   );
 
-  session.defaultSession.setPermissionCheckHandler(
+  whatsappSession.setPermissionCheckHandler(
     (webContents, permission) => {
       const allowedPermissions = [
         "media",
@@ -250,16 +253,16 @@ function openSettingsWindow() {
     resizable: false,
     autoHideMenuBar: true,
     backgroundColor: "#1a1a2e",
-    icon: path.join(__dirname, "assets", "icons", "icon_256x256.png"),
+    icon: path.join(import.meta.dirname, "assets", "icons", "icon_256x256.png"),
     webPreferences: {
-      preload: path.join(__dirname, "preload.js"),
+      preload: path.join(import.meta.dirname, "preload.cjs"),
       contextIsolation: true,
       nodeIntegration: false,
     },
   });
 
   settingsWindow.setMenu(null);
-  settingsWindow.loadFile(path.join(__dirname, "src", "settings-window.html"));
+  settingsWindow.loadFile(path.join(import.meta.dirname, "src", "settings-window.html"));
 
   settingsWindow.on("closed", () => {
     settingsWindow = null;
@@ -311,6 +314,10 @@ ipcMain.on("notification-clicked", () => {
 
 ipcMain.on("badge-count", (event, count) => {
   updateTrayBadge(tray, count);
+});
+
+ipcMain.on("show-notification", (event, data) => {
+  showNativeNotification(mainWindow, data);
 });
 
 // ── App Lifecycle ──

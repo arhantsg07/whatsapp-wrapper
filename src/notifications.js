@@ -1,4 +1,4 @@
-const { Notification } = require("electron");
+import { Notification } from "electron";
 
 /**
  * Inject JavaScript to intercept WhatsApp Web's browser notifications
@@ -13,25 +13,18 @@ function setupNotifications(mainWindow) {
       if (window.__waWrapperNotificationsSetup) return;
       window.__waWrapperNotificationsSetup = true;
 
-      // Store original Notification constructor
-      const OriginalNotification = window.Notification;
-
       // Override browser Notification API
       class WrappedNotification {
         constructor(title, options = {}) {
           // Send to Electron main process via preload bridge
           if (window.whatsappWrapper) {
-            // We can't directly call main process from here,
-            // so we dispatch a custom event that the preload can pick up
-            window.dispatchEvent(new CustomEvent('wa-notification', {
-              detail: {
-                title: title,
-                body: options.body || '',
-                icon: options.icon || '',
-                tag: options.tag || '',
-                silent: options.silent || false,
-              }
-            }));
+            window.whatsappWrapper.showNotification({
+              title: title,
+              body: options.body || '',
+              icon: options.icon || '',
+              tag: options.tag || '',
+              silent: options.silent || false,
+            });
           }
 
           // Keep reference for onclick handling
@@ -81,34 +74,6 @@ function setupNotifications(mainWindow) {
   mainWindow.webContents.executeJavaScript(injectionScript).catch(() => {
     // Silently fail if injection fails (page might not be ready)
   });
-
-  // Listen for notification events from renderer
-  mainWindow.webContents.on("ipc-message", (event, channel, data) => {
-    if (channel === "wa-notification-data") {
-      showNativeNotification(mainWindow, data);
-    }
-  });
-
-  // Also inject a listener in preload context for the custom events
-  const preloadListenerScript = `
-    (function() {
-      if (window.__waWrapperNotifListener) return;
-      window.__waWrapperNotifListener = true;
-
-      window.addEventListener('wa-notification', (event) => {
-        const { title, body, icon, silent } = event.detail;
-
-        // Use the Electron Notification API via IPC
-        // Since we can't directly create Electron notifications from renderer,
-        // we use a different approach - show notification via the webContents
-        new window.__OriginalNotification(title, {
-          body: body,
-          icon: icon,
-          silent: silent,
-        });
-      });
-    })();
-  `;
 }
 
 /**
@@ -134,4 +99,4 @@ function showNativeNotification(mainWindow, { title, body, icon }) {
   notification.show();
 }
 
-module.exports = { setupNotifications };
+export { setupNotifications, showNativeNotification };

@@ -14,6 +14,7 @@ contextBridge.exposeInMainWorld("whatsappWrapper", {
   // ── Notifications ──
   onNotificationClicked: () => ipcRenderer.send("notification-clicked"),
   sendBadgeCount: (count) => ipcRenderer.send("badge-count", count),
+  showNotification: (data) => ipcRenderer.send("show-notification", data),
 
   // ── Platform Info ──
   platform: process.platform,

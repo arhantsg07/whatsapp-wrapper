@@ -1,4 +1,4 @@
-const Store = require("electron-store");
+import Store from "electron-store";
 
 /**
  * Persistent settings store using electron-store.
@@ -33,4 +33,4 @@ const settings = new Store({
   },
 });
 
-module.exports = { settings };
+export { settings };

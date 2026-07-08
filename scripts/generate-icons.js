@@ -4,9 +4,11 @@
  * Run: node scripts/generate-icons.js
  */
 
-const fs = require("fs");
-const path = require("path");
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const iconsDir = path.join(__dirname, "..", "assets", "icons");
 
 // Ensure directory exists

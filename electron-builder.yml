@@ -1,6 +1,6 @@
 appId: com.whatsapp.wrapper
 productName: WhatsApp
-copyright: Copyright © 2024
+copyright: Copyright © 2025
 linux:
   target:
     - AppImage

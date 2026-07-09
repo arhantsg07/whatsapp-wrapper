@@ -15,7 +15,6 @@ const settings = new Store({
     // Appearance
     darkMode: "system", // 'system', 'dark', 'light'
     accentColor: "#25D366", // WhatsApp green
-    customCSS: "",
 
     // Features
     spellCheck: true,

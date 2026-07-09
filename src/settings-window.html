@@ -283,40 +283,6 @@
       border: 1px solid var(--border);
     }
 
-    /* ── Custom CSS Textarea ── */
-    .css-section {
-      padding: 14px 18px;
-    }
-
-    .css-section .setting-label {
-      margin-bottom: 10px;
-    }
-
-    .css-textarea {
-      width: 100%;
-      min-height: 100px;
-      max-height: 180px;
-      background: var(--bg-primary);
-      color: #a8d8a8;
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 12px;
-      font-family: 'Fira Code', 'Courier New', monospace;
-      font-size: 12px;
-      line-height: 1.6;
-      resize: vertical;
-      outline: none;
-      transition: border-color 0.2s ease;
-    }
-
-    .css-textarea::placeholder {
-      color: var(--text-muted);
-    }
-
-    .css-textarea:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px var(--accent-glow);
-    }
 
     /* ── Footer ── */
     .footer {
@@ -506,21 +472,6 @@
             <div class="color-preview" id="colorPreview" style="background: #25D366;"></div>
             <input type="color" id="accentColor" value="#25D366">
           </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Custom CSS Section -->
-    <div class="section">
-      <div class="section-title">Advanced</div>
-      <div class="section-card">
-        <div class="css-section">
-          <div class="setting-label">Custom CSS</div>
-          <div class="setting-desc" style="margin-bottom: 10px;">Inject custom styles into WhatsApp Web</div>
-          <textarea class="css-textarea" id="customCSS" placeholder="/* Enter your custom CSS here */
-body {
-  font-size: 14px;
-}" spellcheck="false"></textarea>
         </div>
       </div>
     </div>

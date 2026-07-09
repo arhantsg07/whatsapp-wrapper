@@ -9,7 +9,6 @@ function injectTheme(mainWindow) {
 
   const darkMode = settings.get("darkMode", "system");
   const accentColor = settings.get("accentColor", "#25D366");
-  const customCSS = settings.get("customCSS", "");
 
   // Build the CSS to inject
   let css = "";
@@ -110,14 +109,6 @@ function injectTheme(mainWindow) {
       transition: width 0.2s ease, transform 0.2s ease !important;
     }
   `;
-
-  // ── User custom CSS ──
-  if (customCSS && customCSS.trim()) {
-    css += `
-      /* WhatsApp Wrapper — User Custom CSS */
-      ${customCSS}
-    `;
-  }
 
   // Remove previously injected styles, then inject new ones
   mainWindow.webContents

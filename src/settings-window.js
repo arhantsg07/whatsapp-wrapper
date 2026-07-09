@@ -16,7 +16,6 @@
     accentColor: document.getElementById("accentColor"),
     accentColorValue: document.getElementById("accentColorValue"),
     colorPreview: document.getElementById("colorPreview"),
-    customCSS: document.getElementById("customCSS"),
     btnSave: document.getElementById("btnSave"),
     btnCancel: document.getElementById("btnCancel"),
     toast: document.getElementById("toast"),
@@ -43,8 +42,6 @@
     elements.accentColor.value = accent;
     elements.accentColorValue.textContent = accent.toUpperCase();
     elements.colorPreview.style.background = accent;
-
-    elements.customCSS.value = currentSettings.customCSS ?? "";
   }
 
   await loadSettings();
@@ -69,7 +66,6 @@
       await api.setSetting("spellCheck", elements.spellCheck.checked);
       await api.setSetting("darkMode", elements.darkMode.value);
       await api.setSetting("accentColor", elements.accentColor.value);
-      await api.setSetting("customCSS", elements.customCSS.value);
 
       showToast();
 

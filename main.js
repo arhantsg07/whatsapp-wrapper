@@ -285,9 +285,6 @@ ipcMain.handle("set-setting", (event, key, value) => {
   if (key === "darkMode" && mainWindow) {
     injectTheme(mainWindow);
   }
-  if (key === "customCSS" && mainWindow) {
-    injectTheme(mainWindow);
-  }
   if (key === "accentColor" && mainWindow) {
     injectTheme(mainWindow);
   }
